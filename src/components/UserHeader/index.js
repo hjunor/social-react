@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import Feed from "../../pages/Feed";
 import UserHeaderNav from "../UserHeaderNav";
 import styles from "./Styles.module.css";
 

@@ -2,9 +2,9 @@ import styles from "./styles.css";
 
 const Footer = () => {
     return (
-        <div>
+        <section className="container">
             <h1 className={styles.footer}>footer</h1>
-        </div>
+        </section>
     );
 };
 
