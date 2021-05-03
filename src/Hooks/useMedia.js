@@ -1,7 +1,6 @@
 // import { Container } from './styles';
 
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../Data/userContext";
+import { useEffect, useState } from "react";
 
 const useMedia = (media) => {
     const [match, setMach] = useState(null);
@@ -11,6 +10,7 @@ const useMedia = (media) => {
             const { matches } = window.matchMedia(media);
             setMach(matches);
         }
+        changeMatch();
 
         window.addEventListener("resize", changeMatch);
 

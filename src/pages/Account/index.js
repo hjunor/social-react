@@ -3,7 +3,7 @@ import UserHeader from "../../components/UserHeader";
 import Feed from "../Feed";
 import PostPhoto from "../PostPhoto";
 import Statis from "../../pages/Statis";
-import styles from "./Styles.module.css";
+// import styles from "./Styles.module.css";
 // import { Container } from './styles';
 
 const Account = () => {

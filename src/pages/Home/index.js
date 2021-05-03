@@ -1,8 +1,9 @@
+import Feed from "../Feed";
 const Home = () => {
     return (
-        <div>
-            <h1>Home</h1>
-        </div>
+        <section className="container mainContainer">
+            <Feed />
+        </section>
     );
 };
 

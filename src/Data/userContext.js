@@ -21,6 +21,23 @@ export const UserStorage = ({ children }) => {
         navigate("/login");
     }, [navigate]);
 
+    async function postCreate(body) {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const payload = await apiPost("/api/photo", body);
+            if (!payload) throw new Error(`Error: Usuario Inválido`);
+
+            navigate("/account");
+        } catch (err) {
+            const { data } = err.response;
+            setError(data.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function userCreate(username, email, password) {
         try {
             setError(null);
@@ -99,7 +116,8 @@ export const UserStorage = ({ children }) => {
 
                     navigate("/account");
                 } catch (err) {
-                    setError("Error: Requisição invalida");
+                    setError("Error: Requisição invalida...");
+                    userLogout();
                 } finally {
                     setLoading(false);
                 }
@@ -122,6 +140,7 @@ export const UserStorage = ({ children }) => {
                 loading,
                 login,
                 userCreate,
+                postCreate,
             }}
         >
             {children}

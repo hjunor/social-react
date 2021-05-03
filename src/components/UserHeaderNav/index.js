@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { UserContext } from "../../Data/userContext";
 import styles from "./Styles.module.css";
 import { ReactComponent as MyPhotos } from "../../Assets/feed.svg";
@@ -14,7 +14,11 @@ const UserHeaderNav = () => {
     const mobile = useMedia("(max-width: 40rem)");
     console.log("mobile", mobile);
     console.log("menu", menu);
+    const { pathname } = useLocation();
 
+    useEffect(() => {
+        setMenu(false);
+    }, [pathname]);
     return (
         <>
             {mobile && (
