@@ -28,3 +28,12 @@ export const apiGet = (path) => {
     };
     return axios.get(url, options);
 };
+
+export const apiGetNoCache = (path) => {
+    const url = getApiUrl(path);
+    const options = {
+        headers: getheaders(),
+        cache: "no-store",
+    };
+    return axios.get(url, options);
+};

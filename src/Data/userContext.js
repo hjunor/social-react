@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { getToken, removeToken, setToken } from "../helpers/account";
-import { apiGet, apiPost } from "../helpers/api";
+import { apiGet, apiPost, apiGetNoCache } from "../helpers/api";
 import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
@@ -11,6 +11,7 @@ export const UserStorage = ({ children }) => {
     const [login, setLogin] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [photos, setPhotos] = useState([]);
     const navigate = useNavigate();
     const userLogout = useCallback(async () => {
         setUser(null);
@@ -20,6 +21,26 @@ export const UserStorage = ({ children }) => {
         removeToken();
         navigate("/login");
     }, [navigate]);
+
+    async function getPhotos({ page, total, user }) {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const payload = await apiGetNoCache(
+                `/api/photo/?_pages${page}&_total=${total}&_user=${user}`
+            );
+            if (!payload) throw new Error(`Error: Usuario Inválido`);
+            const data = (await payload) ? payload.data : null;
+            setPhotos(data);
+            navigate("/account");
+        } catch (err) {
+            const { data } = err.response;
+            setError(data.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     async function postCreate(body) {
         try {
@@ -141,6 +162,8 @@ export const UserStorage = ({ children }) => {
                 login,
                 userCreate,
                 postCreate,
+                photos,
+                getPhotos,
             }}
         >
             {children}
