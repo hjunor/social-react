@@ -12,6 +12,7 @@ export const UserStorage = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [photos, setPhotos] = useState([]);
+    const [photo, setPhoto] = useState(null);
     const navigate = useNavigate();
     const userLogout = useCallback(async () => {
         setUser(null);
@@ -22,6 +23,22 @@ export const UserStorage = ({ children }) => {
         navigate("/login");
     }, [navigate]);
 
+    async function getModal(id) {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const payload = await apiGetNoCache(`/api/photo/${id}`);
+            if (!payload) throw new Error(`Error: Usuario Inválido`);
+            const data = (await payload) ? payload.data : null;
+            setPhoto(data);
+        } catch (err) {
+            const { data } = err.response;
+            setError(data.message);
+        } finally {
+            setLoading(false);
+        }
+    }
     async function getPhotos({ page, total, user }) {
         try {
             setLoading(true);
@@ -162,8 +179,10 @@ export const UserStorage = ({ children }) => {
                 login,
                 userCreate,
                 postCreate,
+                photo,
                 photos,
                 getPhotos,
+                getModal,
             }}
         >
             {children}

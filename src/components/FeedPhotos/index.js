@@ -7,7 +7,7 @@ import styles from "./Styles.module.css";
 
 // import { Container } from './styles';
 
-const FeedPhotos = () => {
+const FeedPhotos = ({ setModal }) => {
     const { error, getPhotos, loading, user, photos } = useContext(UserContext);
     useEffect(() => {
         getPhotos({ page: 1, total: 2, user: 0 });
@@ -17,7 +17,11 @@ const FeedPhotos = () => {
         <ul className={`${styles.feed} animeLeft`}>
             {photos ? (
                 photos.map((photo) => (
-                    <FeedPhotosItem key={photo.id} photo={photo} />
+                    <FeedPhotosItem
+                        key={photo.id}
+                        photo={photo}
+                        setModal={setModal}
+                    />
                 ))
             ) : (
                 <h1>carregando</h1>
