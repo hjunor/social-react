@@ -13,6 +13,7 @@ export const getheaders = () => {
     };
 };
 export const apiPost = (path, data = {}) => {
+    console.log({ path, data });
     const url = getApiUrl(path);
     const options = {
         headers: getheaders(),

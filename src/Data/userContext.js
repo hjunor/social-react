@@ -13,6 +13,7 @@ export const UserStorage = ({ children }) => {
     const [error, setError] = useState(false);
     const [photos, setPhotos] = useState([]);
     const [photo, setPhoto] = useState(null);
+    const [comments, setComments] = useState(null);
     const navigate = useNavigate();
     const userLogout = useCallback(async () => {
         setUser(null);
@@ -23,6 +24,22 @@ export const UserStorage = ({ children }) => {
         navigate("/login");
     }, [navigate]);
 
+    async function postComments(id, body) {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log("**body", body);
+            const payload = await apiPost(`/api/comment/${id}`, body);
+            if (!payload) throw new Error(`Error: Usuario Inválido`);
+            const data = (await payload) ? payload.data : null;
+            setComments(data);
+        } catch (err) {
+            const { data } = err.response;
+            setError(data.message);
+        } finally {
+            setLoading(false);
+        }
+    }
     async function getModal(id) {
         try {
             setLoading(true);
@@ -140,6 +157,7 @@ export const UserStorage = ({ children }) => {
     useEffect(() => {
         async function autoLogin() {
             const token = getToken();
+            console.log("***Token", token);
             if (token) {
                 try {
                     setError(null);
@@ -155,17 +173,14 @@ export const UserStorage = ({ children }) => {
                     navigate("/account");
                 } catch (err) {
                     setError("Error: Requisição invalida...");
-                    userLogout();
                 } finally {
                     setLoading(false);
                 }
-            } else {
-                userLogout();
             }
         }
 
         autoLogin();
-    }, [userLogout]);
+    }, []);
 
     return (
         <Provider
@@ -183,6 +198,9 @@ export const UserStorage = ({ children }) => {
                 photos,
                 getPhotos,
                 getModal,
+                setPhoto,
+                postComments,
+                comments,
             }}
         >
             {children}

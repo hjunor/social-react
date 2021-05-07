@@ -10,7 +10,7 @@ import styles from "./Styles.module.css";
 const FeedPhotos = ({ setModal }) => {
     const { error, getPhotos, loading, user, photos } = useContext(UserContext);
     useEffect(() => {
-        getPhotos({ page: 1, total: 2, user: 0 });
+        getPhotos({ page: 1, total: 50, user: user.id });
     }, []);
 
     return (

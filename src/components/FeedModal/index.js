@@ -5,23 +5,26 @@ import Error from "../Error";
 import styles from "./Styles.module.css";
 
 const FeedModal = ({ id, setModal }) => {
-    const { error, getModal, loading, user, photo } = useContext(UserContext);
+    const { error, getModal, loading, user, setPhoto, photo } = useContext(
+        UserContext
+    );
 
     useEffect(() => {
         getModal(id);
-    }, [photo, getModal]);
+    }, [setPhoto]);
 
     function handleOutsideClick(e) {
-        if (e.target === e.currentTarget) setModal(null);
+        if (e.target === e.currentTarget) {
+            setPhoto(null);
+            setModal(null);
+        }
     }
 
     return (
         <div className={`${styles.modal}`} onClick={handleOutsideClick}>
             {error && <Error />}
             {/* {loadin && <Loading />} */}
-            {photo || !loading ? (
-                <PhotoContent data={photo}></PhotoContent>
-            ) : null}
+            {photo && <PhotoContent data={photo}></PhotoContent>}
         </div>
     );
 };
